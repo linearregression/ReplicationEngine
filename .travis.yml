@@ -16,7 +16,7 @@ script: "make test xref dialyzer"
 branches:
   only:
     - master
-
+    - refactor
 notifications:
   email:
     - YOUR@EMAIL.com
