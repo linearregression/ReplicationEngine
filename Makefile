@@ -62,6 +62,8 @@ endif
 
 REBAR_URL = https://s3.amazonaws.com/rebar3/rebar3
 
+OTP_REL=`cat $(ERL_TOP)/OTP_VERSION | sed "s|\([0-9]*\).*|\1|"`]
+
 PLT_FILE = $(CURDIR)/_plt/*plt
 
 # =============================================================================
