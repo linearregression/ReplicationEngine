@@ -7,6 +7,9 @@
 
 -ifndef('USE_ERLANG_NOW').
 -compile({nowarn_deprecated_function, {erlang,now,0}}).
+-define(timestamp(), erlang:now()).
+-else.
+-define(timestamp(), erlang:timestamp()).
 -endif.
 
 -export([otp_release/0, now/0]).
@@ -24,12 +27,12 @@ otp_release() ->
 % erlang:now is deprecated post 1
 % should use erlang:unique_integer,
 % timestamp is not strictly monontonic
-now() ->
-    case otp_release() >= 18 of
-        true -> 
-             erlang:timestamp(); 
-        false ->
-             erlang:now()
-    end.
+now() -> ?timestamp().
+%    case otp_release() >= 18 of
+%        true -> 
+%             erlang:timestamp(); 
+%        false ->
+%             erlang:now()
+%    end.
 
 
