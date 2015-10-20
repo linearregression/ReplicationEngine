@@ -5,12 +5,13 @@
 -module(replication_helper).
 -author("jonromero").
 
--ifdef(NOERLANGNOW).
+-ifndef(noerlangnow).
 %-compile({nowarn_deprecated_function, {erlang,now,0}}).
--define(timestamp(), erlang:now()).
--else.
 -define(timestamp(), erlang:timestamp()).
+-else.
+-define(timestamp(), erlang:now()).
 -endif.
+%-undef(Macro).
 
 -export([otp_release/0, now/0]).
 
