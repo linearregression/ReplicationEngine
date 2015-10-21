@@ -5,11 +5,7 @@
 -module(replication_helper).
 -author("Jon Vlachoyiannis").
 
--ifdef(noerlangnow).
--compile({nowarn_deprecated_function, {erlang,now,0}}).
--endif.
-
--export([otp_release/0, now/0]).
+-export([otp_release/0]).
 
 -spec otp_release() -> integer().
 otp_release() ->
@@ -19,11 +15,5 @@ otp_release() ->
         error:badarg ->
             16
     end.
-
--spec now() -> erlang:timestamp().
-% erlang:now is deprecated post 18
-% should use erlang:unique_integer,
-% timestamp is not strictly monontonic
-now() -> erlang:now().
 
 
