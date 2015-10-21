@@ -3,8 +3,12 @@
 %%%
 
 -module(replication_helper).
--author("your name").
+-author("Jon Vlachoyiannis").
+
+-ifdef(noerlangnow).
 -compile({nowarn_deprecated_function, {erlang,now,0}}).
+-endif.
+
 -export([otp_release/0, now/0]).
 
 -spec otp_release() -> integer().
