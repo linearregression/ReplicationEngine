@@ -5,11 +5,12 @@
 -module(replication_helper).
 -author("jonromero").
 
--ifndef(noerlangnow).
+-ifdef(noerlangnow).
 %-compile({nowarn_deprecated_function, {erlang,now,0}}).
--define(timestamp(), erlang:timestamp()).
+-define(now(), erlang:timestamp()).
+
 -else.
--define(timestamp(), erlang:now()).
+-define(now(), erlang:now()).
 -endif.
 %-undef(Macro).
 
@@ -24,11 +25,11 @@ otp_release() ->
             16
     end.
 
--spec now() -> erlang:timestamp().
+%-spec now() -> erlang:timestamp().
 % erlang:now is deprecated post 1
 % should use erlang:unique_integer,
 % timestamp is not strictly monontonic
-now() -> ?timestamp().
+%now() -> ?time_stamp().
 %    case otp_release() >= 18 of
 %        true -> 
 %             erlang:timestamp(); 
