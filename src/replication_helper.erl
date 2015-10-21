@@ -21,15 +21,9 @@ otp_release() ->
     end.
 
 -spec now() -> erlang:timestamp().
-% erlang:now is deprecated post 1
+% erlang:now is deprecated post 18
 % should use erlang:unique_integer,
 % timestamp is not strictly monontonic
-now() ->
-    case otp_release() >= 18 of
-        true -> 
-             erlang:timestamp(); 
-        false ->
-             erlang:now()
-    end.
+now() -> erlang:now().
 
 
