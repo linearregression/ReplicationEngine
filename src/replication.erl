@@ -38,8 +38,8 @@ start(_Type, _Args) ->
 init(LongName, Cookie, master) ->
     ok = replication_helper:start_node(LongName, Cookie),
     % starting mnesia
-    ok = mnesia:delete_schema(node()),
-    ok = mnesia:create_schema(node()),
+    ok = mnesia:delete_schema([node()]),
+    ok = mnesia:create_schema([node()]),
     ok = mnesia:start(),
     case mnesia:create_table(ldb_nodes, [{type, set},
                                          {ram_copies,[node()]},
