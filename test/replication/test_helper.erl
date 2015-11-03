@@ -23,14 +23,12 @@ stop_master() ->
 start_slave(Name, Node) ->
     %% Starting a slave node with Distributed Erlang
     ok = ct:pal("Slave:start slave_ip=\"~p\" node_name=\"~p\" cookie=\"~p\"",[?SLAVE_IP, Name, ?COOKIE]),
-    Arg = io:format("-setcookie ~p", [?COOKIE]),
-    {ok, _Slave} = slave:start(?SLAVE_IP, Node, Arg),
+    {ok, _Slave} = replication:init(Name, ?COOKIE),
     ok = ct:pal("Slave \"~p\" started",[Name]),
     ok = rpc:call(Node, code, add_pathsz, [code:get_path()]),
     %% Start the application remotely
- %   {ok, _SlaveApps} = rpc:call(Node, application, ensure_all_started, [?APP]),
- %   {module, test_helper} = rpc:call(Node, code, ensure_loaded, [test_helper]),
+    {module, test_helper} = rpc:call(Node, code, ensure_loaded, [test_helper]),
     ok.
 
 stop_slave(Name) ->
-    ok = slave:stop(Name).
+    stopped = slave:stop(Name).

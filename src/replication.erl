@@ -67,9 +67,10 @@ init(LongName, Cookie) ->
 
 
 stop(_Reason) ->
-    leave_cluster(),
-    net_kernel:stop(),
-    mnesia:stop().
+    Ret = leave_cluster(),
+    ok = net_kernel:stop(),
+    stopped = mnesia:stop(),
+    Ret.
 
 % Returns a new Master based
 % on who was the last the got replicated data
