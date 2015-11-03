@@ -36,7 +36,7 @@ start(_Type, _Args) ->
 % you need to start epmd first
 % try running an erl -name smth
 init(LongName, Cookie, master) ->
-    ok = replication_helper:start_node(LongName, Cookie),
+    true = replication_helper:start_node(LongName, Cookie),
     % starting mnesia
     mnesia:create_schema(node()),
     mnesia:start(),

@@ -42,7 +42,6 @@ init_per_suite(Config) ->
     Config.
 
 end_per_suite(_Config) ->
-
     test_helper:stop_master(),
     ok = ct:pal("Master \"~p\" stopped",[?NODE]),
     ok.
@@ -50,9 +49,9 @@ end_per_suite(_Config) ->
 init_per_testcase(_, Config) ->
     ok = ct:pal("Init per testcase"),
     test_helper:start_slave(?SLAVE1, ?SLAVE1_NAME),
-    ok = ct:pal(" Slave \"~p\" started", [?SLAVE1]),
+    ok = ct:pal(" Slave1 \"~p\" started", [?SLAVE1]),
     test_helper:start_slave(?SLAVE2, ?SLAVE2_NAME),
-    ok = ct:pal(" Slave \"~p\" started", [?SLAVE1]),
+    ok = ct:pal(" Slave2 \"~p\" started", [?SLAVE1]),
     test_helper:start_slave(?OBSERVER, ?OBSERVER_NAME),
     ok = ct:pal(" Observer \"~p\" started", [?SLAVE1]),
     Config.
@@ -69,10 +68,21 @@ end_per_testcase(_, _Config) ->
 
 %% Test main functions
 cluster_of_one(_Config) ->
-    ok = ct:pal("Testing [cluster_of_one]").
+    ok = ct:pal("Testing [cluster_of_one]"),
+    yes = replication:am_I_Master(?NODE),
+    no = replication:am_I_Slave(?NODE),
+    {ready, [?NODE,[],[]]} = replication:refresh(),
+    ok.
 
 master_of_one(_Config) ->
-    ok = ct:pal("Testing [master_of_one]").
+    ok = ct:pal("Testing [master_of_one]"),
+    yes = replication:am_I_Master(?NODE),
+    {connected,[]}  = replication:join_cluster(?NODE),
+    no = replication:am_I_Slave(?NODE),
+    {ready, [?NODE,[],[]]} = replication:refresh(),
+    {ok, disconnected_from_cluster} =replication:leave_cluster(),
+    {ready, [[],[],[]]} = replication:refresh(),
+    ok.
 
 slave_of_one(_Config) ->
     ok = ct:pal("Testing [slave_of_one]").
