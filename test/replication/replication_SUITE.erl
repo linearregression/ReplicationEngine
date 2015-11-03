@@ -10,6 +10,7 @@
 -export([all/0, init_per_suite/1, end_per_suite/1, init_per_testcase/2, end_per_testcase/2]).
 
 -export([cluster_of_one/1, 
+         master_of_zero/1,
          master_of_one/1,
          slave_of_one/1,
          master_join_cluster/1,
@@ -42,8 +43,8 @@ init_per_suite(Config) ->
     Config.
 
 end_per_suite(_Config) ->
-    test_helper:stop_master(),
-    ok = ct:pal("Master \"~p\" stopped",[?NODE]),
+    %test_helper:stop_master(),
+    %ok = ct:pal("Master \"~p\" stopped",[?NODE]),
     ok.
 
 init_per_testcase(_, Config) ->
@@ -72,16 +73,33 @@ cluster_of_one(_Config) ->
     yes = replication:am_I_Master(?NODE),
     no = replication:am_I_Slave(?NODE),
     {ready, [?NODE,[],[]]} = replication:refresh(),
+    ok = replication:replicate(),
+    {error, {not_permitted, {}}} = replication:stop(normal),
+    ok = ct:pal("Each cluster must have one master."),
     ok.
 
-master_of_one(_Config) ->
-    ok = ct:pal("Testing [master_of_one]"),
+master_of_zero(_Config) ->
+    ok = ct:pal("Testing [master_of_zero]"),
     yes = replication:am_I_Master(?NODE),
     {connected,[]}  = replication:join_cluster(?NODE),
     no = replication:am_I_Slave(?NODE),
     {ready, [?NODE,[],[]]} = replication:refresh(),
     {ok, disconnected_from_cluster} =replication:leave_cluster(),
     {ready, [[],[],[]]} = replication:refresh(),
+    {error, {not_permitted, {}}} = replication:stop(normal),
+    ok = ct:pal("Each cluster must have one master."),
+    ok.
+
+master_of_one(_Config) ->
+    ok = ct:pal("Testing [master_of_one]"),
+    yes = replication:am_I_Master(?NODE),
+    {connected,[]}  = replication:join_cluster(?SLAVE1),
+    no = replication:am_I_Slave(?SLAVE1),
+    {ready, [?NODE,[?SLAVE1],[?SLAVE1]]} = replication:refresh(),
+    {ok, disconnected_from_cluster} =replication:leave_cluster(),
+    {ready, [[],[],[]]} = replication:refresh(),
+    {error, {not_permitted, {}}} = replication:stop(normal),
+    ok = ct:pal("Each cluster must have one master."),
     ok.
 
 slave_of_one(_Config) ->

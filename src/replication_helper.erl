@@ -34,4 +34,5 @@ start_node(Node, Cookie) when is_atom(Node), is_atom(Cookie)->
             {error, Reason}
     end,
     ok = ?CONSOLE("function=start_node event=node_started action=set_cookie cookie=\"~p\"", [Cookie]),
-    true = erlang:set_cookie(node(), Cookie).        
+    true = erlang:set_cookie(node(), Cookie),
+    ok.        
