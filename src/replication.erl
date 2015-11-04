@@ -35,7 +35,7 @@ start(_Type, _Args) ->
 
 % you need to start epmd first
 % try running an erl -name smth
-init(LongName, Cookie, master) ->
+init(LongName, Cookie, master) when is_atom(LongName), is_atom(Cookie)->
     ok = replication_helper:start_node(LongName, Cookie),
     % starting mnesia
     ok = mnesia:delete_schema([node()]),
@@ -300,6 +300,7 @@ replicate() ->
 % 127.0.0.1    localhost.localdomain localhost
 
 test_slave(MasterNodeName) ->
+    [] = os:cmd("epmd -daemon"),
     % start one node as slave
     {ok, ready_to_join} = replication:init('beta@localhost.localdomain', 'hello'),
 

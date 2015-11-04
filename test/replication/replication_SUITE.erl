@@ -49,21 +49,22 @@ end_per_suite(_Config) ->
 
 init_per_testcase(_, Config) ->
     ok = ct:pal("Init per testcase"),
+    true = erlang:set_cookie(node(), ?COOKIE),
     test_helper:start_slave(?SLAVE1, ?SLAVE1_NAME),
     ok = ct:pal(" Slave1 \"~p\" started", [?SLAVE1]),
     test_helper:start_slave(?SLAVE2, ?SLAVE2_NAME),
-    ok = ct:pal(" Slave2 \"~p\" started", [?SLAVE1]),
+    ok = ct:pal(" Slave2 \"~p\" started", [?SLAVE2]),
     test_helper:start_slave(?OBSERVER, ?OBSERVER_NAME),
     ok = ct:pal(" Observer \"~p\" started", [?SLAVE1]),
     Config.
 
 end_per_testcase(_, _Config) ->
     ok = ct:pal("End per testcase"),
-    test_helper:stop(?SLAVE1),
+    test_helper:stop_slave(?SLAVE1),
     ok = ct:pal(" Slave \"~p\" stopped", [?SLAVE1]),
-    test_helper:stop(?SLAVE2),
+    test_helper:stop_slave(?SLAVE2),
     ok = ct:pal(" Slave \"~p\" stopped", [?SLAVE2]),
-    test_helper:stop(?OBSERVER),
+    test_helper:stop_slave(?OBSERVER),
     ok = ct:pal("Observer \"~p\" stopped",[?OBSERVER]),
     ok.
 
