@@ -132,5 +132,5 @@ tags:
 #	$(gen_verbose) erl -noshell -pa $(ECOVERALL) -eval 'ecoveralls:travis_ci("$?"), init:stop()'
 
 coverage-report:
-	@REBAR_PROFILE=test $(REBAR) do coveralls send
+	@REBAR_PROFILE=test DEBUG=1 $(REBAR) do coveralls send
 
