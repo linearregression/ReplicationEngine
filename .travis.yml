@@ -12,8 +12,7 @@ cache:
   - $HOME/.cache/rebar3
   - _plt
 install: "true"
-script: "make test xref"
-after_success: "make coverage-report"
+script: "make test xref coverage-report"
 branches:
   only:
     - master
