@@ -82,7 +82,7 @@ cluster_of_one(_Config) ->
 master_of_zero(_Config) ->
     ok = ct:pal("Testing [master_of_zero]"),
     yes = replication:am_I_Master(?NODE),
-    {connected,[]}  = replication:join_cluster(?NODE),
+    {error, {already_master, {}}}  = replication:join_cluster(?NODE),
     no = replication:am_I_Slave(?NODE),
     {ready, [?NODE,[],[]]} = replication:refresh(),
     {ok, disconnected_from_cluster} =replication:leave_cluster(),
@@ -94,7 +94,7 @@ master_of_zero(_Config) ->
 master_of_one(_Config) ->
     ok = ct:pal("Testing [master_of_one]"),
     yes = replication:am_I_Master(?NODE),
-    {connected,[]}  = replication:join_cluster(?SLAVE1),
+    {error, {already_master, {}}}  = replication:join_cluster(?SLAVE1),
     no = replication:am_I_Slave(?SLAVE1),
     {ready, [?NODE,[?SLAVE1],[?SLAVE1]]} = replication:refresh(),
     {ok, disconnected_from_cluster} =replication:leave_cluster(),
