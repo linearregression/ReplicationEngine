@@ -128,7 +128,9 @@ $(REBAR):
 tags:
 	find src _build/default/lib -name "*.[he]rl" -print | etags -
 
-coverage-report: $(shell ls -1rt `find $(COVERDATADIR) -type f -name \*.coverdata 2>/dev/null` | tail -n1)
-	$(gen_verbose) erl -noshell -pa $(ECOVERALL) -eval 'ecoveralls:travis_ci("$?"), init:stop()'
+#coverage-report: $(shell ls -1rt `find $(COVERDATADIR) -type f -name \*.coverdata 2>/dev/null` | tail -n1)
+#	$(gen_verbose) erl -noshell -pa $(ECOVERALL) -eval 'ecoveralls:travis_ci("$?"), init:stop()'
 
+coverage-report:
+	@REBAR_PROFILE=test $(REBAR) do coveralls send
 

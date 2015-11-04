@@ -17,7 +17,7 @@ after_success: "make coverage-report"
 branches:
   only:
     - master
-    - experimental
+    - usecoveralls
 
 notifications:
   email:
