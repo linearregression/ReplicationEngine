@@ -33,7 +33,7 @@ start_slave(Name, Node) ->
     ok.
 
 stop_slave(Name) ->
-    stopped = slave:stop(Name).
+    ok = slave:stop(Name).
 
 ensure_loaded(App) ->
   case application:load(App) of
