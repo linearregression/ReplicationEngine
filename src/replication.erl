@@ -135,6 +135,10 @@ check_if_alive(NodeName) ->
 % Join cluster as slave
 %
 join_cluster(ClusterName) ->
+    IsMaster = am_I_Master(node()),
+    join_cluster(ClusterName, IsMaster).
+
+join_cluster(ClusterName, no) ->
     case mnesia:change_config(extra_db_nodes, [ClusterName]) of
         {ok, [_]} -> % connected to cluster, lets read info
             
@@ -157,15 +161,15 @@ join_cluster(ClusterName) ->
             {error, {not_connected, {}}};
         Error ->
             Error
-    end.
+    end;
 
 %
 % Join cluster as observer
 %
 join_cluster(ClusterName, observer) ->
     join_cluster(ClusterName),
-    make_Observer(node()).
-
+    make_Observer(node());
+join_cluster(_ClusterName, yes) -> {error, {already_master, {}}}.
 
 leave_cluster() ->
     IsMaster = am_I_Master(node()),
