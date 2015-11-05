@@ -1,5 +1,5 @@
 {nodes, ['mnesia_master@127.0.0.1', 'mnesia_slave@127.0.0.1']}.
-{export, "logs/all.coverdata"}.
+{export, "./logs/ct/all.coverdata"}.
 {level, details}. 
 {incl_mods, [
     replication_helper,

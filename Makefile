@@ -67,7 +67,7 @@ PLT_FILE = $(CURDIR)/_plt/*plt
 
 # Send Code coverage data only when in TraviscI
 ifeq ($(USER),travis)
-COVERDATADIR = $(CURDIR)/log/ct
+COVERDATADIR = $(CURDIR)/logs/ct
 ECOVERALL = $(CURDIR)/_build/test/lib/*/ebin
 endif
 
@@ -115,7 +115,7 @@ distclean: $(REBAR)
 
 testclean:
 	@rm -fr _build/test && rm -rf ./test/*.beam
-	@find log/ct -maxdepth 1 -name ct_run* -type d -cmin +360 -exec rm -fr {} \;
+	@find logs/ct -maxdepth 1 -name ct_run* -type d -cmin +360 -exec rm -fr {} \;
 
 epmd:
 	@pgrep epmd 2> /dev/null > /dev/null || epmd -daemon || true
@@ -132,5 +132,6 @@ tags:
 #	$(gen_verbose) erl -noshell -pa $(ECOVERALL) -eval 'ecoveralls:travis_ci("$?"), init:stop()'
 
 coverage-report:
+	@$(shell ls -1rt `find $(COVERDATADIR) -type f -name \*.coverdata 2>/dev/null` | tail -n1 | xargs cp -t $(COVERDATADIR))
 	@REBAR_PROFILE=test DEBUG=1 $(REBAR) do coveralls send
 
