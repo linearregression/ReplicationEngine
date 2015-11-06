@@ -79,7 +79,7 @@ all: $(REBAR)
 	@REBAR_PROFILE=dev $(REBAR) do compile
 
 test: $(REBAR) epmd
-	@REBAR_PROFILE=test $(REBAR) do ct -v -c
+	@REBAR_PROFILE=test DEBUG=1 $(REBAR) do ct -v -c
 
 dialyzer: $(REBAR)
 	@REBAR_PROFILE=dev $(REBAR) do dialyzer | fgrep -v -f $(CURDIR)/dialyzer.ignore
