@@ -18,8 +18,3 @@ branches:
     - master
     - usecoveralls
     - coveralls-working
-
-notifications:
-  email:
-    - YOUR@EMAIL.com
-
