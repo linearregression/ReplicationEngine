@@ -17,6 +17,7 @@ branches:
   only:
     - master
     - usecoveralls
+    - coveralls-working
 
 notifications:
   email:
