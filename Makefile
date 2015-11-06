@@ -132,5 +132,7 @@ tags:
 #	$(gen_verbose) erl -noshell -pa $(ECOVERALL) -eval 'ecoveralls:travis_ci("$?"), init:stop()'
 
 coverage-report:
+	@echo "all.coverdata files:"
+	@echo $(shell find . | grep all.coverdata)
 	@REBAR_PROFILE=test DEBUG=1 $(REBAR) do coveralls send
 
